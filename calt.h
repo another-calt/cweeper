@@ -63,15 +63,16 @@ typedef char str[];
 //
 
 #define println(out)                                                           \
-  _Generic(((out)),                                                            \
-      int: printf("%d\n", (out)),                                              \
-      int *: printf("%x\n", (out)),                                            \
-      unsigned int: printf("%d\n", (out)),                                     \
-      unsigned int *: printf("%x\n", (out)),                                   \
-      float: printf("%f\n", (out)),                                            \
-      double: printf("%f\n", (out)),                                           \
-      char: printf("%c\n", (out)),                                             \
-      char *: printf("%s\n", (out)),                                           \
-      const char *: printf("%s\n", (out)),                                     \
-      FILE *: printf("%x\n", (out)),                                           \
-      default: printf("[unknown print type]\n"))
+    _Generic(((out)),                                                            \
+        int: printf("%d\n", (out)),                                              \
+        int *: printf("%x\n", (out)),                                            \
+        unsigned int: printf("%d\n", (out)),                                     \
+        unsigned int *: printf("%x\n", (out)),                                   \
+        float: printf("%f\n", (out)),                                            \
+        double: printf("%f\n", (out)),                                           \
+        char: printf("%c\n", (out)),                                             \
+        char *: printf("%s\n", (out)),                                           \
+        char **: printf("%s\n", (out)),                                          \
+        const char *: printf("%s\n", (out)),                                     \
+        FILE *: printf("%x\n", (out)),                                           \
+        default: printf("[unknown print type]\n"))
