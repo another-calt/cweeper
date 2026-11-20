@@ -5,3 +5,4 @@ cweep
 .DS_Store
 .vscode/
 *.m
+test/

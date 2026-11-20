@@ -35,7 +35,8 @@
 // KEYWORDS
 //
 
-#define program int main()
+#define program int main(void)
+// #define program() int main(int argc, char **argv)
 
 // assignment
 #define var __auto_type
@@ -75,3 +76,18 @@ typedef char str[];
         const char *: printf("%s\n", (out)),                                     \
         FILE *: printf("%x\n", (out)),                                           \
         default: printf("[unknown print type]\n"))
+
+
+//
+// CLASSES
+//
+
+
+#define $Vector(T) \
+    typedef struct{\
+        u16 size;\
+        u16 max;\
+        T *list;\
+    } vector_T
+
+#define vector_append(vec, value)
