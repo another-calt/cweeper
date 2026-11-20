@@ -1,39 +1,55 @@
 #include "calt.h"
-#include <stdlib.h>
+
+
 #include <string.h>
+#include <stdlib.h>
+
 
 #define BUFFER_SIZE 50
 
 program {
-   FILE *fileptr = fopen(".gitignore", "r");
-   char gitignoreBuffer[BUFFER_SIZE] = {0};
-   var killcount = 0;
-
+   
+   var *fileptr = fopen(".gitignore", "r");
    if (fileptr == NULL) {
-      println("No .gitignore found in directory");
+      println("No '.gitignore' file found in directory.");
       return 1;
    }
 
-   while (fgets(gitignoreBuffer, BUFFER_SIZE, fileptr) != NULL) {
-      killcount++;
-   }
+   char target[BUFFER_SIZE];
+   while (fgets(target, BUFFER_SIZE, fileptr) != NULL) {
 
-   char hitlist[BUFFER_SIZE][killcount];
-   memset(hitlist, 0, BUFFER_SIZE * killcount * sizeof(char));
-
-   i32 l = 0;
-   while (fgets(gitignoreBuffer, sizeof(gitignoreBuffer), fileptr) != NULL) {
-      for (var i = 0; i < 50; i++) {
-         hitlist[l][i] = gitignoreBuffer[i];
+      if (target[0] == "!") {
+         continue;
       }
-      l++;
-   }
+      println(target);
+      char rm[100] = "rm ";
+      strcat(rm, target);
+      println(rm);
 
+      system(rm);
+
+   }
    fclose(fileptr);
-   free(fileptr);
+   println("Clean");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
    return 0;
-
-
-
 }
