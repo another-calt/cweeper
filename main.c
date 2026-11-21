@@ -26,7 +26,8 @@ app {
          && strcmp(buffer, ".gitignore\n") != 0
          && strcmp(buffer, ".git/\n") != 0
       ) {
-         strcat(cmd, "find ");
+         if (strstr(buffer, "/") != NULL) strcat(cmd, "rm -r ");
+         else strcat(cmd, "rm ");
          strcat(cmd, buffer);
          system(cmd);
          strcpy(cmd, "");
