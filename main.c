@@ -2,20 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 #define BUFFER_SIZE 50
 
-
 $Vector(str)
-
-typedef struct {
-   str scope;
-   vector_str focus;
-} rule;
-
-$Vector(rule)
-
 
 app {
 
@@ -31,47 +20,21 @@ app {
       printf("EXIT: No '.gitignore' found in folder.");
       return -1;
    }
-   while (fgets(buffer, BUFFER_SIZE, fileptr) != NULL) {
-      if (buffer[0] == '!') vappend_str(&allows_global, buffer);
-      else vappend_str(&rules_global, buffer);
+   while (fgets(buffer, BUFFER_SIZE, fileptr) != NULL) { // buffer = row in .gitignore
+      if (strcmp(buffer, ".\n") != 0
+         && strcmp(buffer, "..\n") != 0 
+         && strcmp(buffer, ".gitignore\n") != 0
+         && strcmp(buffer, ".git/\n") != 0
+      ) {
+         strcat(cmd, "find ");
+         strcat(cmd, buffer);
+         system(cmd);
+         strcpy(cmd, "");
+         
+      }
    }
    fclose(fileptr);
 
-   // assign project root
-   /*
-            | ditched recursion |
-   */
-   // fileptr = popen("pwd", "r");
-   // if (fileptr == NULL) {
-   //    printf("ERROR: printed unemployed directory");
-   //    return -1;
-   // }
-   // projectRoot = fgets(buffer, BUFFER_SIZE, fileptr);
-   // pclose(fileptr);
-   vappend_str(&rules_global, "o" );
-   for (int i = 0; i < rules_global.size; i++) {
-      println(i);
-      println(rules_global.list[i]);
-
-
-
-
-
-      strcpy(cmd, "");
-
-   }
-
-
-   
-
-   
-
-   // delete process
-   /*
-   - scan everything in ./
-   - is on hitlist & !allowed : rm
-   - if folder, rm -r
-   */
    println("Clean");
    
    return 0;
