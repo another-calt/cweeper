@@ -64,6 +64,7 @@ typedef char *str; // this has flipped between *str and str[] so many times
       unsigned int *: printf("%x\n", (out)),                                   \
       float: printf("%f\n", (out)),                                            \
       double: printf("%f\n", (out)),                                           \
+      size_t: printf("%d\n", (out)),                                           \
       char: printf("%c\n", (out)),                                             \
       char *: printf("%s\n", (out)),                                           \
       const char *: printf("%s\n", (out)),                                     \
@@ -84,9 +85,7 @@ typedef char *str; // this has flipped between *str and str[] so many times
                                                                                                                                            \
    static inline void vappend_##T(vector_##T *vec, T value) {                              \
       if (vec->size >= vec->max) {                                                                \
-         if (vec->max == 0) {                                                                         \
-            vec->max = 4;                                                                                             \
-         }                                                                                                                          \
+         if (vec->max == 0) vec->max = 4;                                                                                             \
          else vec->max *= 2;                                                                                  \
          vec->list = realloc(vec->list, vec->max * sizeof(T));                                      \
       }                                                                                                                                 \
