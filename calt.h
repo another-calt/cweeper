@@ -17,8 +17,10 @@
 //
 // CHECKS
 //
-#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 201112L ||                \
-    !defined(__GNUC__) || defined(__STRICT_ANSI__)
+
+
+
+#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 201112L
 #error "GNU C11 or later is required, compile with '-std=gnu11'"
 #endif
 
@@ -28,22 +30,26 @@
 // IMPORTS
 //
 
-#include <stdint.h>
+
 #include <stdio.h>
+#include <stdlib.h>
+
+
 
 //
 // KEYWORDS
 //
 
-#define program int main(void)
-// #define program() int main(int argc, char **argv)
+#define app int main(void)
+#define application() int main(int argc, char **argv)
+
+#define elif else if
 
 // assignment
 #define var __auto_type
 #define lock const __auto_type
 
 // types
-
 typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;
@@ -57,37 +63,51 @@ typedef uint64_t u64;
 typedef float f32;
 typedef double f64;
 
-typedef char str[];
+typedef char *str; // this has flipped between *str and str[] so many times
 
 //
-// FUNCTIONS
+/* FUNCTIONS */
 //
 
 #define println(out)                                                           \
-    _Generic(((out)),                                                            \
-        int: printf("%d\n", (out)),                                              \
-        int *: printf("%x\n", (out)),                                            \
-        unsigned int: printf("%d\n", (out)),                                     \
-        unsigned int *: printf("%x\n", (out)),                                   \
-        float: printf("%f\n", (out)),                                            \
-        double: printf("%f\n", (out)),                                           \
-        char: printf("%c\n", (out)),                                             \
-        char *: printf("%s\n", (out)),                                           \
-        const char *: printf("%s\n", (out)),                                     \
-        FILE *: printf("%x\n", (out)),                                           \
-        default: printf("[unknown print type]\n"))
-
+   _Generic(((out)),                                                            \
+      int: printf("%d\n", (out)),                                              \
+      int *: printf("%x\n", (out)),                                            \
+      unsigned int: printf("%d\n", (out)),                                     \
+      unsigned int *: printf("%x\n", (out)),                                   \
+      float: printf("%f\n", (out)),                                            \
+      double: printf("%f\n", (out)),                                           \
+      char: printf("%c\n", (out)),                                             \
+      char *: printf("%s\n", (out)),                                           \
+      const char *: printf("%s\n", (out)),                                     \
+      FILE *: printf("%x\n", (out)),                                           \
+      default: printf("[unknown print type]\n"))
 
 //
-// CLASSES
+/* CLASSES */
 //
 
+// ok they arent classes, but... you get what i mean.
 
-#define $Vector(T) \
-    typedef struct{\
-        u16 size;\
-        u16 max;\
-        T *list;\
-    } vector_T
+#define $Vector(T)                                                                                                    \
+   typedef struct {                                                                                                         \
+      size_t size;                                                                                                         \
+      size_t max;                                                                                                          \
+      T *list;                                                                                                                      \
+   } vector_##T;                                                                                                              \
+                                                                                                                                                         \
+   static inline int vappend_##T(vector_##T *vec, T value) {                              \
+      if (vec->size >= vec->max) {                                                                \
+         if (vec->max == 0) {                                                                         \
+            vec->max = 4;                                                                                             \
+         }                                                                                                                          \
+         else {                                                                                                                   \
+            vec->max *= 2;                                                                                  \
+         }                                                                                                               \    
+         vec->list = realloc(vec->list, vec->max * sizeof(T));                                      \
+      }                                                                                                                                 \
+      vec->list[vec->size] = value;                                                                               \
+      vec->size++;                                                                                                   \
+      return 0;                                                                                                      \
+   }                                                                                                                 \
 
-#define vector_append(vec, value)

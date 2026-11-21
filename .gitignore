@@ -1,8 +1,5 @@
-*.m
 *.o
 cweep
 *.out
 .DS_Store
 .vscode/
-*.m
-test/
