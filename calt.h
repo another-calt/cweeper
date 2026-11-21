@@ -87,12 +87,8 @@ typedef char *str; // this has flipped between *str and str[] so many times
          if (vec->max == 0) {                                                                         \
             vec->max = 4;                                                                                             \
          }                                                                                                                          \
-         else {                                                                                                                   \
-            vec->max *= 2;                                                                                  \
-         }                                                                                                               \   
+         else vec->max *= 2;                                                                                  \
          vec->list = realloc(vec->list, vec->max * sizeof(T));                                      \
-         printf("Vector grow"); \
-         println(value);\
       }                                                                                                                                 \
       vec->list[vec->size] = value;                                                                               \
       vec->size++;                                                                                                   \

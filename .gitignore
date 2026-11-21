@@ -3,3 +3,5 @@ cweep
 *.out
 .DS_Store
 .vscode/
+folder/
+*.txt
