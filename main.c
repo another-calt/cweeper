@@ -1,4 +1,5 @@
 #include "calt.h"
+#include <stdlib.h>
 #include <string.h>
 
 
@@ -20,11 +21,13 @@ $Vector(rule)
 app {
 
    // variables
-
    FILE *fileptr = {0};
+   FILE *shptr = {0};
    char buffer[BUFFER_SIZE] = {0};
+   char buffer2[BUFFER_SIZE] = {0};
    vector_str rules_global = {0};
    vector_str allows_global = {0};
+   char killlist[20];
 
 
 
@@ -56,17 +59,17 @@ app {
       println("oh no");
       return -1;
    }
-   while (fgets(buffer, BUFFER_SIZE, fileptr) != NULL) {
-      
+   while (fgets(buffer, BUFFER_SIZE, fileptr) != NULL) { // buffer contains file target
       if(strcmp(buffer, ".\n") != 0
          && strcmp(buffer, "..\n") != 0
          && strcmp(buffer, ".gitignore\n") != 0
          && strcmp(buffer, ".git\n") != 0
       ) {
-         println(buffer);
-         
+         strcpy(killlist ,strcat("rm", buffer));
+         system(killlist);
       }
    }
+   pclose(fileptr);
 
 
 
@@ -77,8 +80,8 @@ app {
    // delete process
    /*
    - scan everything in ./
-   - i on hitlist & !allowed : rm
-   - if folder, rm -rf
+   - is on hitlist & !allowed : rm
+   - if folder, rm -r
    */
    println("Clean");
    
