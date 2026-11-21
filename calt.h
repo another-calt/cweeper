@@ -14,27 +14,14 @@
    limitations under the License.
 */
 
-//
-// CHECKS
-//
-
-
-
-#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 201112L
-#error "GNU C11 or later is required, compile with '-std=gnu11'"
-#endif
-
 #pragma once
 
 //
 // IMPORTS
 //
 
-
 #include <stdio.h>
 #include <stdlib.h>
-
-
 
 //
 // KEYWORDS
@@ -88,26 +75,26 @@ typedef char *str; // this has flipped between *str and str[] so many times
 //
 
 // ok they arent classes, but... you get what i mean.
-
-#define $Vector(T)                                                                                                    \
+#define $Vector(T)                                                                                                   \
    typedef struct {                                                                                                         \
       size_t size;                                                                                                         \
       size_t max;                                                                                                          \
       T *list;                                                                                                                      \
    } vector_##T;                                                                                                              \
-                                                                                                                                                         \
-   static inline int vappend_##T(vector_##T *vec, T value) {                              \
+                                                                                                                                           \
+   static inline void vappend_##T(vector_##T *vec, T value) {                              \
       if (vec->size >= vec->max) {                                                                \
          if (vec->max == 0) {                                                                         \
             vec->max = 4;                                                                                             \
          }                                                                                                                          \
          else {                                                                                                                   \
             vec->max *= 2;                                                                                  \
-         }                                                                                                               \    
+         }                                                                                                               \   
          vec->list = realloc(vec->list, vec->max * sizeof(T));                                      \
+         printf("Vector grow"); \
+         println(value);\
       }                                                                                                                                 \
       vec->list[vec->size] = value;                                                                               \
       vec->size++;                                                                                                   \
-      return 0;                                                                                                      \
-   }                                                                                                                 \
+   }
 
