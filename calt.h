@@ -92,4 +92,3 @@ typedef char *str; // this has flipped between *str and str[] so many times
       vec->list[vec->size] = value;                                                                               \
       vec->size++;                                                                                                   \
    }
-

@@ -3,10 +3,3 @@ cweep
 *.out
 .DS_Store
 .vscode/
-folder/
-*.txt
-build/
-file
-.gitignore
-file2
-file3

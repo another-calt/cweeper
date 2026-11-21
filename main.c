@@ -1,18 +1,13 @@
 #include "calt.h"
-#include <stdlib.h>
 #include <string.h>
 
-#define BUFFER_SIZE 50
-
-$Vector(str)
+#define BUFFER_SIZE 30
 
 app {
 
    // variables
    FILE *fileptr = {0};
    char buffer[BUFFER_SIZE] = {0};
-   vector_str rules_global = {0};
-   vector_str allows_global = {0};
    char cmd[BUFFER_SIZE+9];
 
    // read top level .gitignore (if there is one)
@@ -26,17 +21,13 @@ app {
          && strcmp(buffer, ".gitignore\n") != 0
          && strcmp(buffer, ".git/\n") != 0
       ) {
-         if (strstr(buffer, "/") != NULL) strcat(cmd, "rm -r ");
-         else strcat(cmd, "rm ");
+         strstr(buffer, "/") != NULL ? strcat(cmd, "rm -r ") : strcat(cmd, "rm ");
          strcat(cmd, buffer);
          system(cmd);
          strcpy(cmd, "");
-         
       }
    }
    fclose(fileptr);
-
    println("Clean");
-   
    return 0;
 }
