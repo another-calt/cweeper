@@ -3,6 +3,25 @@
 
 #define BUFFER_SIZE 30
 
+typedef struct {                                                                                                         \
+   size_t size;                                                                                                         \
+   size_t max;                                                                                                          \
+   str *list;                                                                                                                      \
+} vector_str; 
+
+/// ill test this later
+static inline void vappend_str
+      (vector_str *vec, str value)
+{                        
+   if (vec->size >= vec->max) {                                                                
+      if (vec->max == 0) vec->max = 4;                                                                                             \
+      else vec->max *= 2;                                                                                  
+      vec->list = realloc(vec->list, vec->max * sizeof(str));                                      
+   }                                                                                                                                 
+   strcpy(vec->list[vec->size], value);
+   vec->size++;
+}
+
 app {
 
    // variables
@@ -31,3 +50,17 @@ app {
    println("Clean");
    return 0;
 }
+
+/*
+enter directory
+search for rules
+   if applicable, create new rules applying to current scope*
+for each file
+   if in hitlist & !in allowlist
+      kill
+add to tree
+
+this all irks me as a very object - oriented problem*
+sunk cost says i can bs through it with functions and macros
+but logic says to just use c++
+*/

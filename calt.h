@@ -87,25 +87,27 @@
          FILE *: printf("%x\n", (out)),                                           \
          default: printf("[unknown print type]\n"))
 #endif
+
 //
 /* CLASSES */
 //
-
-// ok they arent classes, but... you get what i mean.
-#ifdef VECTORS
-#define $Vector(T)                                                                                                   \
-   typedef struct {                                                                                                         \
-      size_t size;                                                                                                         \
-      size_t max;                                                                                                          \
-      T *list;                                                                                                                      \
-   } vector_##T;                                                                                                              \                                                                                                  \
-   static inline void vappend_##T(vector_##T *vec, T value) {                              \
-      if (vec->size >= vec->max) {                                                                \
-         if (vec->max == 0) vec->max = 4;                                                                                             \
-         else vec->max *= 2;                                                                                  \
-         vec->list = realloc(vec->list, vec->max * sizeof(T));                                      \
-      }                                                                                                                                 \
-      vec->list[vec->size] = value;                                                                               \
-      vec->size++;                                                                                                   \
-   }            
+#ifdef CLASSES
+   // ok they arent classes, but... you get what i mean.
+   #ifdef VECTORS
+      #define $Vector(T)                                                                                                   \
+         typedef struct {                                                                                                         \
+            size_t size;                                                                                                         \
+            size_t max;                                                                                                          \
+            T *list;                                                                                                                      \
+         } vector_##T;                                                                                                              \                                                                                                  \
+         static inline void vappend_##T(vector_##T *vec, T value) {                              \
+            if (vec->size >= vec->max) {                                                                \
+               if (vec->max == 0) vec->max = 4;                                                                                             \
+               else vec->max *= 2;                                                                                  \
+               vec->list = realloc(vec->list, vec->max * sizeof(T));                                      \
+            }                                                                                                                                 \
+            vec->list[vec->size] = value;                                                                               \
+            vec->size++;                                                                                                   \
+         }            
+   #endif
 #endif
