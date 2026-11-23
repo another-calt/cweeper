@@ -6,9 +6,10 @@
 #include <unistd.h>
 #include <iostream>
 
+
 #define println(out) std::cout << (out) << "\n"
 
-#define vdisplay(vector) do { for (int i = 0; i < vector.size(); i++) {println(vector[i]);} } while(0);
+#define vDisplay(vector) do { for (int i = 0; i < vector.size(); i++) {println(vector[i]);} } while(0);
 
 class RuleSet {
     public:
@@ -17,48 +18,65 @@ class RuleSet {
         std::vector<std::string> allowlist;
 
         void display() {
-            println("Scope: " + scope);
-            println("Hitlist: ");
-            vdisplay(hitlist);
-            println("Allowlist: ");
-            vdisplay(allowlist);
+            println( "\x1b[4;37m Scope: \x1b[0m " + scope );
+            println( "\x1b[4;37m Hitlist: \x1b[0m " );
+            vDisplay(hitlist);
+            println( "\x1b[4;37m Allowlist: \x1b[0m " );
+            vDisplay(allowlist);
         }
-
-        void serialize(std::string file, std::string cwd) {}
 };
 
 static std::vector<RuleSet> rule_list;
 
 int main(void) {
+
+    println( "active" );
+
     std::string buf;
 
-    println("active");
-
-    std::ifstream file_buf(".gitignore");
-    if (!file_buf.is_open()) {
-        println("No '.gitignore' found in directry");
+    std::ifstream fileptr( ".gitignore" );
+    if (!fileptr.is_open()) {
+        println( "No '.gitignore' found in directry" );
         exit(1);
     }
 
-    std::string cwd("\0", FILENAME_MAX+1);
-    const std::string root_dir = getcwd(&cwd[0], cwd.capacity());
-    std::string current_dir = root_dir;
-    println("Project root set at: " + root_dir);
+    std::string cwd( "\0", FILENAME_MAX+1 );
+    const std::string root_dir = getcwd( &cwd[0], cwd.capacity() );
 
-    RuleSet rules1;
-    rules1.scope = current_dir;
-    while (std::getline(file_buf, buf)) {
+    std::string current_dir = root_dir;
+    println ( "Project root set at: " + root_dir );
+
+    RuleSet global_rules;
+    global_rules.scope = current_dir;
+
+    while (std::getline( fileptr, buf )) {
         if (buf[0] == '!') {
-            rules1.allowlist.push_back(buf);
+            global_rules.allowlist.push_back( buf );
         } else {
-            rules1.hitlist.push_back(buf);
+            global_rules.hitlist.push_back( buf );
         }
     }
-    file_buf.close();
 
-    rules1.display();
-    rule_list.push_back(rules1);
+    fileptr.close();
+    global_rules.display();
+    rule_list.push_back( global_rules );
+
+    std::string target;
+    std::string cmd
+    ;
+    for (int ζ = 0; ζ < rule_list.size(); ζ++) {
+        for (int χ = 0; χ < rule_list[ζ].hitlist.size(); χ++) {
+            target = rule_list[ζ].hitlist[χ];
+            cmd = "rm ";
+            if (target[-1] == '/') {
+                cmd += "-r ";
+            }
+            cmd += target;
+            system(cmd.c_str());
+        }
+    }
     
+
 
 
     
