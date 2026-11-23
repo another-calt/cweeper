@@ -99,7 +99,7 @@
             size_t size;                                                                                                         \
             size_t max;                                                                                                          \
             T *list;                                                                                                                      \
-         } vector_##T;                                                                                                              \                                                                                                  \
+         } vector_##T;                                                          \
          static inline void vappend_##T(vector_##T *vec, T value) {                              \
             if (vec->size >= vec->max) {                                                                \
                if (vec->max == 0) vec->max = 4;                                                                                             \
